@@ -12,11 +12,9 @@ from socketio import Client
 from Managers.BoardManager import BoardManager
 from Managers.ParticipantsManager import ParticipantsManager
 from Managers.SessionHistoryManager import SessionHistoryManager
-from Managers.SessionManager import SessionManager
 from Packets.PacketHeader import PacketHeader
 from Packets.PacketLobbyInfo import PacketLobbyInfo
 from Packets.PacketParticipants import PacketParticipants
-from Packets.PacketSession import PacketSession
 from Packets.PacketSessionHistory import PacketSessionHistory
 
 
@@ -26,7 +24,6 @@ class PacketsManager:
         self._currentFrameIdentifier: int = -1
         self._participantsManager: ParticipantsManager = ParticipantsManager()
         self._sessionHistoryManager: SessionHistoryManager = SessionHistoryManager()
-        self._sessionManager: SessionManager = SessionManager()
         self._boardManager: BoardManager = BoardManager()
         self._socketIoClient: Client = Client()
         self._socketIoClient.connect("http://localhost:3001")
@@ -35,17 +32,15 @@ class PacketsManager:
             int, Tuple[Union[Type[PacketLobbyInfo], Type[PacketParticipants]]], Union[Type[ParticipantsManager]]] = {
             4: (PacketParticipants, self._participantsManager),
             9: (PacketLobbyInfo,),
-            11: (PacketSessionHistory, self._sessionHistoryManager),
-            1: (PacketSession, self._sessionManager)
+            11: (PacketSessionHistory, self._sessionHistoryManager)
         }
 
         self._webDispatch: Dict[str, Tuple[Any, float]] = {
-            "send_board": (self._boardManager.get_ordered_board, 1),
-            "send_session": (self._sessionManager.get_session_data, 1)  # send an update every 1 seconds
+            "send_board": (self._boardManager.get_ordered_board, 1)
         }
 
         self._webDispatchTimings: Dict[str, float] = {
-            key: time() for key in self._webDispatch
+            "send_board": time()
         }
 
     def onData(self, data: bytes) -> None:

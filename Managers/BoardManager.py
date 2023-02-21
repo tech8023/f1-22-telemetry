@@ -72,7 +72,6 @@ class BoardManager:
                                                               participant.m_name.decode("utf-8"), 1),
                         "isBestSector3": self._is_best_sector(bestLap.get_sector_thrd_in_ms(),
                                                               participant.m_name.decode("utf-8"), 2),
-                        "tyreCompound": bestLap.get_tyre_compound()
                     }
                 else:
                     self._board[idx] = {
@@ -89,6 +88,5 @@ class BoardManager:
                         "sector3Formatted": "",
                         "isBestSector1": False,
                         "isBestSector2": False,
-                        "isBestSector3": False,
-                        "tyreCompound": -1
+                        "isBestSector3": False
                     }

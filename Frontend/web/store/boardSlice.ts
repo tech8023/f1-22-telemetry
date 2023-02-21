@@ -21,8 +21,7 @@ export interface DriverData {
     sector3Formatted: string,
     isBestSector1: boolean,
     isBestSector2: boolean,
-    isBestSector3: boolean,
-    tyreCompound: number
+    isBestSector3: boolean
 }
 
 export interface BoardState {
